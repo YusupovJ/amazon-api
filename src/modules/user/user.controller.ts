@@ -2,7 +2,7 @@ import { Body, Controller, Get, Post } from "@nestjs/common";
 import { UserService } from "./user.service";
 import { LoginDto, RefreshDto, RegisterDto, VerifyDto } from "./dto/user.dto";
 import { ApiResponse } from "src/common/apiResponse";
-import { User } from "src/common/decorators";
+import { Auth, User } from "src/common/decorators";
 import { IPayload } from "src/common/types";
 import { ApiBearerAuth, ApiBody, ApiTags } from "@nestjs/swagger";
 
@@ -26,7 +26,7 @@ export class UserController {
   @Post("/verify")
   @ApiBody({ type: VerifyDto })
   async verify(@Body() verifyDto: VerifyDto) {
-    return null;
+    return new ApiResponse(await this.userService.verify(verifyDto));
   }
 
   @Post("/refresh")
@@ -36,15 +36,16 @@ export class UserController {
   }
 
   @Post("/logout")
+  @Auth()
   @ApiBearerAuth()
   async logout(@User() user: IPayload) {
-    return new ApiResponse(await this.userService.logout(user.userId));
+    return new ApiResponse(await this.userService.logout(user.userId), 201);
   }
 
   @Get("/me")
   @ApiBearerAuth()
+  @Auth()
   async me(@User() user: IPayload) {
-    console.log(user.userId);
     return new ApiResponse(await this.userService.me(user.userId));
   }
 }

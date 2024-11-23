@@ -18,13 +18,13 @@ export class AuthGuard implements CanActivate {
     const payload = verifyAccessToken(accessToken);
 
     if (!payload) {
-      throw new ForbiddenException("Access forbidden");
+      throw new ForbiddenException("Authentification failed, please log in again");
     }
 
     request.role = payload.role;
     request.userId = payload.userId;
 
-    if (!roles) {
+    if (!roles.length) {
       return true;
     }
 

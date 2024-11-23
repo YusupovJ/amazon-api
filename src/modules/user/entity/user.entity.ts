@@ -17,6 +17,9 @@ export class User extends RootEntity {
   @Column()
   firstName: string;
 
+  @Column("boolean", { default: false })
+  isVerified: boolean;
+
   @Column({ nullable: true })
   lastName?: string;
 
@@ -25,4 +28,7 @@ export class User extends RootEntity {
 
   @Column("int", { nullable: true })
   otp?: number;
+
+  @Column("datetime", { nullable: true })
+  expiresAt?: Date;
 }

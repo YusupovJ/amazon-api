@@ -9,7 +9,6 @@ export const generateAccessToken = (payload: IPayload) => {
 };
 
 export const generateRefreshToken = (payload: IPayload) => {
-  console.log(envConfig);
   return sign(payload, envConfig.refreshToken.secret, {
     expiresIn: envConfig.refreshToken.expire,
   });
